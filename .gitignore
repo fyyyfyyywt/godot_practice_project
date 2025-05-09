@@ -16,6 +16,7 @@ export/
 builds/
 build/
 Build/
+addons
 
 # OS-specific
 .DS_Store
