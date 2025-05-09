@@ -1,0 +1,209 @@
+[gd_scene load_steps=14 format=3 uid="uid://bqas2xfvvh2q3"]
+
+[ext_resource type="Texture2D" uid="uid://dk3ivi6ja6ska" path="res://AssetBundle/Sprites/ForestBackground.png" id="1_iukft"]
+[ext_resource type="Script" uid="uid://creum8hhrnhoc" path="res://Script/game_manager.gd" id="1_kldst"]
+[ext_resource type="PackedScene" uid="uid://brxkruqdul4yb" path="res://Scenes/player.tscn" id="2_gl6un"]
+[ext_resource type="PackedScene" uid="uid://b4amwnrrifsop" path="res://Scenes/Items.tscn" id="3_3so38"]
+[ext_resource type="PackedScene" uid="uid://dg582v5kgpmd2" path="res://Scenes/Slime.tscn" id="3_j5yw3"]
+[ext_resource type="FontFile" uid="uid://hix8wfjvqcf3" path="res://AssetBundle/Uranus_Pixel_11Px.ttf" id="5_b2bpf"]
+[ext_resource type="AudioStream" uid="uid://b07ryp82jyxq8" path="res://AssetBundle/Audio/GameOver.mp3" id="6_7lihs"]
+[ext_resource type="Theme" uid="uid://ccgw1l71prk1v" path="res://PauseTheme.tres" id="6_71axn"]
+[ext_resource type="Texture2D" uid="uid://cgafrnd4k47ps" path="res://AssetBundle/Sprites/pause_normal.png" id="6_bf53h"]
+[ext_resource type="Texture2D" uid="uid://d0p0aldxuuhtl" path="res://AssetBundle/Sprites/pause_pressed.png" id="7_71axn"]
+[ext_resource type="Script" uid="uid://bmm82jf5mu2ij" path="res://Script/PauseMenu.gd" id="7_dahhg"]
+[ext_resource type="Texture2D" uid="uid://bnwvydqjhxi0m" path="res://AssetBundle/Sprites/pause_hover.png" id="8_dahhg"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_j5yw3"]
+
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("spawn_timer", "game_over_timer", "score_label", "gameover_label")]
+y_sort_enabled = true
+script = ExtResource("1_kldst")
+Slime = ExtResource("3_j5yw3")
+Bullet_Item = ExtResource("3_3so38")
+spawn_timer = NodePath("Timer")
+game_over_timer = NodePath("GameOverTimer")
+score_label = NodePath("UI/Label")
+gameover_label = NodePath("UI/GameOverLabel")
+
+[node name="bkg1" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(-118, 1)
+texture = ExtResource("1_iukft")
+metadata/_edit_lock_ = true
+
+[node name="bkg2" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(116, 1)
+texture = ExtResource("1_iukft")
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.365, 1.32)
+metadata/_edit_lock_ = true
+
+[node name="Player" parent="." instance=ExtResource("2_gl6un")]
+position = Vector2(-224, 121)
+
+[node name="Boundry" type="Node" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Boundry"]
+position = Vector2(0, 140)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/StaticBody2D"]
+shape = SubResource("WorldBoundaryShape2D_j5yw3")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Boundry"]
+position = Vector2(0, -140)
+rotation = -3.14159
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/StaticBody2D2"]
+shape = SubResource("WorldBoundaryShape2D_j5yw3")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="Boundry"]
+position = Vector2(-238, 4)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/StaticBody2D3"]
+shape = SubResource("WorldBoundaryShape2D_j5yw3")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="Boundry"]
+position = Vector2(234, -1)
+rotation = -1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/StaticBody2D4"]
+shape = SubResource("WorldBoundaryShape2D_j5yw3")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="UI"]
+custom_minimum_size = Vector2(-0.6, 0)
+offset_left = 8.0
+offset_right = 73.0
+offset_bottom = 25.0
+rotation = -0.00218606
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("5_b2bpf")
+theme_override_font_sizes/font_size = 24
+text = "Score: "
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -236.5
+offset_top = -48.5
+offset_right = 236.5
+offset_bottom = 48.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0.607843, 0.443137, 0, 1)
+theme_override_constants/outline_size = 60
+theme_override_fonts/font = ExtResource("5_b2bpf")
+theme_override_font_sizes/font_size = 120
+text = "GAME OVER"
+
+[node name="Control" type="Control" parent="UI" node_paths=PackedStringArray("MenuPanel")]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_71axn")
+script = ExtResource("7_dahhg")
+MenuPanel = NodePath("Pause")
+
+[node name="TextureButton" type="TextureButton" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -24.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 24.0
+grow_horizontal = 0
+focus_mode = 0
+texture_normal = ExtResource("6_bf53h")
+texture_pressed = ExtResource("7_71axn")
+texture_hover = ExtResource("8_dahhg")
+
+[node name="Pause" type="Panel" parent="UI/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/Control/Pause"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.5
+offset_top = -50.0
+offset_right = 80.5
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_b2bpf")
+theme_override_font_sizes/font_size = 48
+text = "PAUSED"
+metadata/_edit_use_anchors_ = true
+
+[node name="ResumeButton" type="Button" parent="UI/Control/Pause"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.5
+offset_right = 26.5
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Resume"
+
+[node name="QuitButton" type="Button" parent="UI/Control/Pause"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.5
+offset_top = 30.0
+offset_right = 26.5
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Quit"
+
+[node name="FailSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_7lihs")
+
+[node name="GameOverTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_new_slime"]
+[connection signal="pressed" from="UI/Control/TextureButton" to="UI/Control" method="_pause"]
+[connection signal="pressed" from="UI/Control/Pause/ResumeButton" to="UI/Control" method="_resume"]
+[connection signal="pressed" from="UI/Control/Pause/QuitButton" to="UI/Control" method="_quit"]
+[connection signal="timeout" from="GameOverTimer" to="." method="_on_game_over_timer_timeout"]

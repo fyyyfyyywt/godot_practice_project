@@ -1,0 +1,41 @@
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://ccgw1l71prk1v"]
+
+[ext_resource type="FontFile" uid="uid://hix8wfjvqcf3" path="res://AssetBundle/Uranus_Pixel_11Px.ttf" id="1_svso5"]
+[ext_resource type="Texture2D" uid="uid://dkiqb5t8a60j" path="res://AssetBundle/Sprites/button_hover.png" id="2_mvlqe"]
+[ext_resource type="Texture2D" uid="uid://dapo7wj80kyfw" path="res://AssetBundle/Sprites/button_normal.png" id="3_is7fn"]
+[ext_resource type="Texture2D" uid="uid://84ct8r0nw5jw" path="res://AssetBundle/Sprites/button_pressed.png" id="4_a2cnb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_svso5"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_40myg"]
+texture = ExtResource("2_mvlqe")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sipa6"]
+texture = ExtResource("3_is7fn")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xggcs"]
+texture = ExtResource("4_a2cnb")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_su76j"]
+bg_color = Color(0, 0, 0, 0.298039)
+
+[resource]
+Button/font_sizes/font_size = 12
+Button/fonts/font = ExtResource("1_svso5")
+Button/styles/focus = SubResource("StyleBoxEmpty_svso5")
+Button/styles/hover = SubResource("StyleBoxTexture_40myg")
+Button/styles/normal = SubResource("StyleBoxTexture_sipa6")
+Button/styles/pressed = SubResource("StyleBoxTexture_xggcs")
+Panel/styles/panel = SubResource("StyleBoxFlat_su76j")

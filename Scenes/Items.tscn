@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4amwnrrifsop"]
+
+[ext_resource type="Texture2D" uid="uid://p0gefe8o65w2" path="res://Tiles/OutsideFeatures/OutsideFeatures_32_1.png" id="1_mw838"]
+[ext_resource type="Script" uid="uid://clqqu0iwq50wv" path="res://Script/items.gd" id="1_vsxfv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mw838"]
+size = Vector2(16, 22)
+
+[node name="Items" type="Area2D"]
+script = ExtResource("1_vsxfv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_mw838")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_mw838")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
