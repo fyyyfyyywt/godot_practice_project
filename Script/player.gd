@@ -7,18 +7,20 @@ signal player_hit  # Signal for when the player is hit by an enemy
 @export var bullet_scene: PackedScene
 @export var fire_rate: float = 0.5  # Shooting interval (seconds)
 @export var bullet_offset: float = 10  # Bullet spawn offset
+
 @export var fire_rate_boost_duration: float = 10.0  # Duration of fire rate boost
 @export var fire_rate_boost_amount: float = 0.1  # Amount to reduce fire rate by
-
-
-var shoot_timer: float = 0.0  # 自动射击计时器
-var can_move: bool = true  # Control player input during game over
 var base_fire_rate: float  # Store the default fire rate
 var boost_timer: float = 0.0  # Track boost duration
 var is_boosted: bool = false  # Track if boost is active
 
+var shoot_timer: float = 0.0  # 自动射击计时器
+var can_move: bool = true  # Control player input during game over
+var power_up_ui : Control
+
 func _ready() -> void:
 	base_fire_rate = fire_rate  # Store initial fire rate
+	power_up_ui = $"../UI/PowerUpUI"
 	
 func _process(delta: float) -> void:
 	if can_move:
@@ -40,6 +42,10 @@ func _process(delta: float) -> void:
 			if boost_timer <= 0:
 				is_boosted = false
 				fire_rate = base_fire_rate  # Revert to original fire rate
+				if power_up_ui: power_up_ui.set_power_up_active("fire_rate", false)
+			if power_up_ui:
+				power_up_ui.update_fire_rate_timer(boost_timer, fire_rate_boost_duration)
+
 
 func _physics_process(delta: float) -> void:
 	if can_move:
@@ -71,6 +77,8 @@ func apply_fire_rate_boost() -> void:
 	fire_rate = max(fire_rate - fire_rate_boost_amount, 0.1)  # Apply boost
 	is_boosted = true
 	boost_timer = fire_rate_boost_duration  # Start boost timer
+	if power_up_ui:
+		power_up_ui.set_power_up_active("fire_rate", true)
 		
 func disable_input() -> void:
 	can_move = false

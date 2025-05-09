@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bqas2xfvvh2q3"]
+[gd_scene load_steps=16 format=3 uid="uid://bqas2xfvvh2q3"]
 
 [ext_resource type="Texture2D" uid="uid://dk3ivi6ja6ska" path="res://AssetBundle/Sprites/ForestBackground.png" id="1_iukft"]
 [ext_resource type="Script" uid="uid://creum8hhrnhoc" path="res://Script/game_manager.gd" id="1_kldst"]
@@ -10,7 +10,9 @@
 [ext_resource type="Theme" uid="uid://ccgw1l71prk1v" path="res://PauseTheme.tres" id="6_71axn"]
 [ext_resource type="Texture2D" uid="uid://cgafrnd4k47ps" path="res://AssetBundle/Sprites/pause_normal.png" id="6_bf53h"]
 [ext_resource type="Texture2D" uid="uid://d0p0aldxuuhtl" path="res://AssetBundle/Sprites/pause_pressed.png" id="7_71axn"]
+[ext_resource type="Script" uid="uid://wk6y0mwymrd2" path="res://Script/power_up_ui.gd" id="7_acvyw"]
 [ext_resource type="Script" uid="uid://bmm82jf5mu2ij" path="res://Script/PauseMenu.gd" id="7_dahhg"]
+[ext_resource type="Texture2D" uid="uid://c4nqgf24gk0yd" path="res://Tiles/RuralTownExterior/RuralTownExterior_4_1.png" id="7_wxwew"]
 [ext_resource type="Texture2D" uid="uid://bnwvydqjhxi0m" path="res://AssetBundle/Sprites/pause_hover.png" id="8_dahhg"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_j5yw3"]
@@ -111,8 +113,54 @@ theme_override_fonts/font = ExtResource("5_b2bpf")
 theme_override_font_sizes/font_size = 120
 text = "GAME OVER"
 
+[node name="PowerUpUI" type="Control" parent="UI" node_paths=PackedStringArray("fire_rate_timer", "fire_rate_indicator")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_acvyw")
+fire_rate_timer = NodePath("FireRateTimer")
+fire_rate_indicator = NodePath("Indicators/FireRateIndicator")
+
+[node name="FireRateTimer" type="ProgressBar" parent="UI/PowerUpUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 8.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+max_value = 10.0
+show_percentage = false
+
+[node name="Indicators" type="HBoxContainer" parent="UI/PowerUpUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -360.0
+offset_top = 8.0
+offset_right = -360.0
+offset_bottom = 16.0
+grow_horizontal = 0
+
+[node name="FireRateIndicator" type="TextureRect" parent="UI/PowerUpUI/Indicators"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("7_wxwew")
+expand_mode = 3
+stretch_mode = 3
+
 [node name="Control" type="Control" parent="UI" node_paths=PackedStringArray("MenuPanel")]
 process_mode = 3
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -196,11 +244,11 @@ grow_vertical = 2
 focus_mode = 0
 text = "Quit"
 
-[node name="FailSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("6_7lihs")
-
 [node name="GameOverTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="FailSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_7lihs")
 
 [connection signal="timeout" from="Timer" to="." method="_new_slime"]
 [connection signal="pressed" from="UI/Control/TextureButton" to="UI/Control" method="_pause"]
