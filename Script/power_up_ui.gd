@@ -15,5 +15,4 @@ func update_fire_rate_timer(time_left: float, max_time: float) -> void:
 func set_power_up_active(power_up_type: String, is_active: bool) -> void:
 	match power_up_type:
 		"fire_rate":
-			print("aaaa")
 			fire_rate_indicator.visible = is_active

@@ -2,11 +2,12 @@ extends CharacterBody2D
 
 signal player_hit  # Signal for when the player is hit by an enemy
 
-@export var move_speed: float = 50
+@export var move_speed: float = 100
 @export var animator: AnimatedSprite2D
 @export var bullet_scene: PackedScene
+
 @export var fire_rate: float = 0.5  # Shooting interval (seconds)
-@export var bullet_offset: float = 10  # Bullet spawn offset
+@export var bullet_offset: float = 11  # Bullet spawn offset
 
 @export var fire_rate_boost_duration: float = 10.0  # Duration of fire rate boost
 @export var fire_rate_boost_amount: float = 0.1  # Amount to reduce fire rate by
@@ -50,11 +51,11 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if can_move:
 		velocity = Input.get_vector("Left", "Right", "Up", "Down") * move_speed
+		animator.flip_h = (get_global_mouse_position() - global_position).normalized().x<0
 		if velocity == Vector2.ZERO:
 			animator.play("idle")
 		else:
 			animator.play("run")
-			animator.flip_h = (get_global_mouse_position() - global_position).normalized().x<0
 	else:
 		velocity = Vector2.ZERO
 		animator.play("over")
@@ -69,8 +70,9 @@ func _spawn_bullet(direction: Vector2) -> void:
 	if not bullet_node:
 		push_error("❌ Failed to instantiate bullet!！")
 		return
-	bullet_node.global_position = Vector2(6,6) + global_position + direction * bullet_offset 
+	bullet_node.global_position =  global_position + direction * bullet_offset 
 	bullet_node.direction = direction
+	bullet_node.rotation = direction.angle()
 	get_parent().add_child(bullet_node)
 
 func apply_fire_rate_boost() -> void:
@@ -79,6 +81,10 @@ func apply_fire_rate_boost() -> void:
 	boost_timer = fire_rate_boost_duration  # Start boost timer
 	if power_up_ui:
 		power_up_ui.set_power_up_active("fire_rate", true)
-		
+
+func apply_speed_up() -> void:
+	move_speed += 10
+	move_speed = clamp(move_speed,100, 130 )  # Apply boost
+	
 func disable_input() -> void:
 	can_move = false

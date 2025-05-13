@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://bfffbiqfffn6n"]
+
+[ext_resource type="Script" uid="uid://40f1ysacsu2v" path="res://Script/speed_up_prop.gd" id="1_fcqjw"]
+[ext_resource type="Texture2D" uid="uid://n7dglkypfwu5" path="res://Tiles/OutsideFeatures/OutsideFeatures_21_2.png" id="1_o7mj4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fcqjw"]
+atlas = ExtResource("1_o7mj4")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fj6e5"]
+atlas = ExtResource("1_o7mj4")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nkx3a"]
+atlas = ExtResource("1_o7mj4")
+region = Rect2(32, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q06ve"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fcqjw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fj6e5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nkx3a")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trhot"]
+size = Vector2(9.24, 14)
+
+[node name="SpeedUpProp" type="Area2D"]
+script = ExtResource("1_fcqjw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_q06ve")
+frame = 2
+frame_progress = 0.197099
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.88, 3.78)
+shape = SubResource("RectangleShape2D_trhot")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

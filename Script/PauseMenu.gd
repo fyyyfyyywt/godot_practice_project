@@ -11,9 +11,9 @@ func _input(event: InputEvent) -> void:
 		if event.keycode == KEY_ESCAPE and event.pressed:
 			if not get_tree().paused:
 				_pause()
-			else:
-				
+			else:				
 				_resume()
+				
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

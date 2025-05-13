@@ -18,7 +18,6 @@ func _physics_process(delta: float) -> void:
 		position += Vector2(slime_speed, 0)*delta
 		if position.x < -255:
 			emit_signal("slime_triggered_game_over")
-			get_tree().current_scene.is_game_over = true
 	else:
 		animator.play("die")
 		await get_tree().create_timer(0.5).timeout
