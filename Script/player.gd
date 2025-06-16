@@ -7,7 +7,7 @@ signal player_hit  # Signal for when the player is hit by an enemy
 @export var bullet_scene: PackedScene
 
 @export var fire_rate: float = 0.5  # Shooting interval (seconds)
-@export var bullet_offset: float = 11  # Bullet spawn offset
+@export var bullet_offset: float = 32  # Bullet spawn offset
 
 @export var fire_rate_boost_duration: float = 10.0  # Duration of fire rate boost
 @export var fire_rate_boost_amount: float = 0.1  # Amount to reduce fire rate by
@@ -19,12 +19,30 @@ var shoot_timer: float = 0.0  # 自动射击计时器
 var can_move: bool = true  # Control player input during game over
 var power_up_ui : Control
 
+var pistol_scene = preload("res://Scenes/Weapon.tscn")
+
 func _ready() -> void:
 	base_fire_rate = fire_rate  # Store initial fire rate
 	power_up_ui = $"../UI/PowerUpUI"
 	
+	var pistol = pistol_scene.instantiate()
+	$WeaponHolder.add_child(pistol)
+	
 func _process(delta: float) -> void:
 	if can_move:
+		var angle = get_shoot_direction().angle()
+		$AimUI.rotation = angle
+		# --- 在 Weapon 实例化后，动态调整其贴图方向 ---
+		var weapon = $WeaponHolder.get_node_or_null("Weapon")
+		if weapon:
+			weapon.rotation = angle
+			if animator.flip_h:
+				weapon.scale.y = -1
+				$WeaponHolder.z_index = -5
+			else:
+				weapon.scale.y = 1
+				$WeaponHolder.z_index = 1
+			
 		# Update shooting timer
 		shoot_timer += delta
 		if shoot_timer >= fire_rate:
@@ -47,18 +65,28 @@ func _process(delta: float) -> void:
 			if power_up_ui:
 				power_up_ui.update_fire_rate_timer(boost_timer, fire_rate_boost_duration)
 
-
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if can_move:
 		velocity = Input.get_vector("Left", "Right", "Up", "Down") * move_speed
-		animator.flip_h = (get_global_mouse_position() - global_position).normalized().x<0
+		var facing_left = (get_global_mouse_position() - global_position).normalized().x < 0
+		animator.flip_h = facing_left
+		if animator.flip_h:
+			$player/Sprite2D.visible = true
+		else:
+			$player/Sprite2D.visible = false
+		var offset = abs($WeaponHolder.position.x)
+		if facing_left:
+			$WeaponHolder.position.x =  offset 
+		else: $WeaponHolder.position.x = -offset 
+		
 		if velocity == Vector2.ZERO:
 			animator.play("idle")
 		else:
-			animator.play("run")
+			pass
+			#animator.play("run")
 	else:
 		velocity = Vector2.ZERO
-		animator.play("over")
+		#animator.play("over")
 	move_and_slide()
 
 func get_shoot_direction() -> Vector2:
@@ -83,8 +111,11 @@ func apply_fire_rate_boost() -> void:
 		power_up_ui.set_power_up_active("fire_rate", true)
 
 func apply_speed_up() -> void:
-	move_speed += 10
-	move_speed = clamp(move_speed,100, 130 )  # Apply boost
-	
+	move_speed += 25
+	move_speed = clamp(move_speed,100, 250)  # Apply boost
+
+func on_hit() -> void:
+	emit_signal("player_hit")
+		
 func disable_input() -> void:
 	can_move = false

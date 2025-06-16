@@ -1,0 +1,103 @@
+[gd_scene load_steps=12 format=3 uid="uid://bfnkxe1imeh85"]
+
+[ext_resource type="Script" uid="uid://6f25vxblp722" path="res://Script/weapon.gd" id="1_m5ws0"]
+[ext_resource type="Texture2D" uid="uid://b4tcq1c0va7o6" path="res://AssetBundle/Sprites/Untitled_Artwork 6.png" id="2_sw2lr"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_13qgj"]
+load_path = "res://.godot/imported/Untitled_Artwork 2025-06-07 20_33_04.png-3ff1bed3a87dc63bb18aaabc0e7997f8.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sw2lr"]
+atlas = SubResource("CompressedTexture2D_13qgj")
+region = Rect2(28, 0, 66, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lstme"]
+atlas = SubResource("CompressedTexture2D_13qgj")
+region = Rect2(94, 0, 66, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p5ieq"]
+atlas = SubResource("CompressedTexture2D_13qgj")
+region = Rect2(160, 0, 66, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s5b11"]
+atlas = SubResource("CompressedTexture2D_13qgj")
+region = Rect2(226, 0, 66, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sp1hs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sw2lr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lstme")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p5ieq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s5b11")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[sub_resource type="Animation" id="Animation_lstme"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(8, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_sw2lr"]
+resource_name = "new_animation"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(8, 0), Vector2(8, 1), Vector2(8, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_p5ieq"]
+_data = {
+&"RESET": SubResource("Animation_lstme"),
+&"new_animation": SubResource("Animation_sw2lr")
+}
+
+[node name="Weapon" type="Node2D"]
+script = ExtResource("1_m5ws0")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 4
+position = Vector2(32, -5)
+scale = Vector2(0.9, 0.9)
+sprite_frames = SubResource("SpriteFrames_sp1hs")
+autoplay = "default"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 5
+position = Vector2(8, 1)
+texture = ExtResource("2_sw2lr")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Sprite2D")
+libraries = {
+&"": SubResource("AnimationLibrary_p5ieq")
+}
+autoplay = "new_animation"

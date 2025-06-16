@@ -4,13 +4,16 @@ var is_touched : bool=false
 var time_alive: float = 0.0
 
 func _ready() -> void:
-	add_to_group("SpeedUp_Props")  # Add to group for counting active items
-
+	add_to_group("pickup_items")  # Add to group for counting active items
+	$AnimationPlayer.play("IdleFloat")
+	
+func _process(delta):
+	rotation += 0.05 * delta  # 每帧缓慢旋转
+	
 func _physics_process(delta: float) -> void:
 	if is_touched:
 		queue_free()
 	else:
-		$AnimatedSprite2D.play("default")
 		time_alive += delta
 		if time_alive >= despawn_time:
 			queue_free()

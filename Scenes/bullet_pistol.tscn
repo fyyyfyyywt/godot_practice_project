@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://qs6iepi4pgh4"]
+
+[ext_resource type="Script" uid="uid://vjue705icc4d" path="res://Script/bullet_pistol.gd" id="1_nbxc7"]
+[ext_resource type="Texture2D" uid="uid://dhwxrnrg5w7iq" path="res://AssetBundle/Sprites/Bullet 2025-06-07 19_50_52.png" id="2_d5kmt"]
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_4qwyl"]
+points = PackedVector2Array(-3.663, -40.3226, -32.967, 0, -3.663, 40.3226, 14.652, 40.3226, 14.652, -40.3226)
+
+[node name="Node2D" type="Area2D" groups=["bullet"]]
+script = ExtResource("1_nbxc7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1, 0.5)
+texture = ExtResource("2_d5kmt")
+offset = Vector2(0, -3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -3.14159
+scale = Vector2(0.273, -0.124)
+shape = SubResource("ConvexPolygonShape2D_4qwyl")

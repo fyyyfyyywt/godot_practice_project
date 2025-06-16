@@ -1,0 +1,66 @@
+[gd_resource type="TileSet" load_steps=8 format=3 uid="uid://c2yv08sgp5gb1"]
+
+[ext_resource type="Texture2D" uid="uid://l4trbotohort" path="res://TileSet/grass_lower.PNG" id="1_oatvu"]
+[ext_resource type="Texture2D" uid="uid://pfqjul0ewus" path="res://TileSet/grass.png" id="2_b1oqh"]
+[ext_resource type="Texture2D" uid="uid://dufdyo6gbjom" path="res://TileSet/grass_upper.png" id="3_55uty"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x3xnh"]
+texture = ExtResource("1_oatvu")
+texture_region_size = Vector2i(16, 20)
+use_texture_padding = false
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_55uty"]
+texture = ExtResource("2_b1oqh")
+margins = Vector2i(2, 0)
+0:0/animation_columns = 4
+0:0/animation_speed = 0.1
+0:0/animation_frame_0/duration = 1.0
+0:0/animation_frame_1/duration = 2.0
+0:0/animation_frame_2/duration = 2.0
+0:0/animation_frame_3/duration = 2.0
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7jcpl"]
+texture = ExtResource("2_b1oqh")
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w0osc"]
+texture = ExtResource("3_55uty")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_x3xnh")
+sources/11 = SubResource("TileSetAtlasSource_55uty")
+sources/13 = SubResource("TileSetAtlasSource_7jcpl")
+sources/17 = SubResource("TileSetAtlasSource_w0osc")

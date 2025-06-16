@@ -1,10 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bfffbiqfffn6n"]
+[gd_scene load_steps=7 format=3 uid="uid://gjrkhhhmwteu"]
 
-[ext_resource type="Script" uid="uid://40f1ysacsu2v" path="res://Script/speed_up_prop.gd" id="1_fcqjw"]
-[ext_resource type="Texture2D" uid="uid://dcmtnp4h4t54v" path="res://AssetBundle/Sprites/SpeedUpProp.png" id="3_fj6e5"]
+[ext_resource type="Script" uid="uid://clqqu0iwq50wv" path="res://Script/fire_rate_prop.gd" id="1_217pq"]
+[ext_resource type="Texture2D" uid="uid://cp32r3yvuiium" path="res://AssetBundle/Sprites/PowerUpProp.PNG" id="2_217pq"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_trhot"]
-size = Vector2(32, 32)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mw838"]
+size = Vector2(26, 22)
 
 [sub_resource type="Animation" id="Animation_fcqjw"]
 resource_name = "IdleFloat"
@@ -68,15 +68,16 @@ _data = {
 &"RESET": SubResource("Animation_fj6e5")
 }
 
-[node name="SpeedUpProp" type="Area2D"]
-script = ExtResource("1_fcqjw")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_trhot")
+[node name="PowerUpProp" type="Area2D"]
+script = ExtResource("1_217pq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.05, 0.05)
-texture = ExtResource("3_fj6e5")
+texture = ExtResource("2_217pq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_mw838")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

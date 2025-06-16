@@ -18,11 +18,12 @@ config/icon="res://icon.svg"
 [autoload]
 
 Bgm="*res://Scenes/bgm.tscn"
+GameBalanceLoader="*res://Script/game_balance_loader.gd"
 
 [display]
 
-window/size/viewport_width=640
-window/size/viewport_height=360
+window/size/viewport_width=1024
+window/size/viewport_height=512
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
@@ -32,6 +33,12 @@ window/name=""
 
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
+
+[importer_defaults]
+
+animation_library={
+&"import_script/path": "uid://creum8hhrnhoc"
+}
 
 [input]
 
