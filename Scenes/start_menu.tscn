@@ -1,0 +1,238 @@
+[gd_scene load_steps=18 format=3 uid="uid://bm5prxvdondei"]
+
+[ext_resource type="Theme" uid="uid://ccgw1l71prk1v" path="res://PauseTheme.tres" id="1_626he"]
+[ext_resource type="Script" uid="uid://tgqrma6j3at0" path="res://Script/start_menu.gd" id="1_juhg0"]
+[ext_resource type="Texture2D" uid="uid://wqp4pckrs0wt" path="res://AssetBundle/Sprites/start_menu_fox_eye_L.png" id="3_626he"]
+[ext_resource type="Texture2D" uid="uid://b15oo6unewrik" path="res://AssetBundle/Sprites/bak.png" id="3_rpttd"]
+[ext_resource type="Texture2D" uid="uid://dw5nlhgkulpor" path="res://AssetBundle/Sprites/start_menu_fox_eye_R.png" id="4_8u0lp"]
+[ext_resource type="FontFile" uid="uid://hix8wfjvqcf3" path="res://AssetBundle/Uranus_Pixel_11Px.ttf" id="6_8u0lp"]
+[ext_resource type="Texture2D" uid="uid://c2jcmconwse6b" path="res://AssetBundle/Sprites/start_menu_fox_tail.png" id="6_77ila"]
+[ext_resource type="FontFile" uid="uid://cvf06onavfnxn" path="res://AssetBundle/RussoOne-Regular.ttf" id="7_i2i62"]
+[ext_resource type="Texture2D" uid="uid://cmchxja3d88g1" path="res://AssetBundle/Sprites/fire_particle.png" id="8_lfskg"]
+[ext_resource type="Texture2D" uid="uid://dak1you8fs0n" path="res://AssetBundle/Sprites/ear.png" id="8_slhe1"]
+[ext_resource type="Texture2D" uid="uid://bwy25qwxy7wa3" path="res://AssetBundle/Sprites/ear2.png" id="9_qnxl2"]
+[ext_resource type="Texture2D" uid="uid://6t3v0kn0l255" path="res://AssetBundle/Sprites/body_front.png" id="10_1u5ka"]
+
+[sub_resource type="Animation" id="Animation_jfkjl"]
+resource_name = "tail_wag"
+length = 2.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton2D/Bone2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.139626, 0.0, -0.139626, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton2D/Bone2D/Bone2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.246037, 0.766667, 1.24347, 1.74981, 2.24604),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.00960805, -0.279261, -0.0171027, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Skeleton2D/Bone2D/Bone2D/Bone2D:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.508535, 1.01271, 1.48766, 2.00522, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.330366, 0.037093, -0.30643, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_rl2bw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton2D/Bone2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton2D/Bone2D/Bone2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Skeleton2D/Bone2D/Bone2D/Bone2D:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l146v"]
+_data = {
+&"RESET": SubResource("Animation_rl2bw"),
+&"tail_wag": SubResource("Animation_jfkjl")
+}
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lfskg"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ru7em"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+gravity = Vector3(0, -80, 0)
+
+[node name="StartMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("1_626he")
+script = ExtResource("1_juhg0")
+metadata/_edit_vertical_guides_ = [-185.0]
+
+[node name="FOX" type="Node2D" parent="."]
+
+[node name="bak" type="Sprite2D" parent="FOX"]
+position = Vector2(504, 278.5)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("3_rpttd")
+
+[node name="Polygon2D" type="Polygon2D" parent="FOX"]
+position = Vector2(630, 410)
+scale = Vector2(0.75, 0.75)
+offset = Vector2(-873.333, -562.667)
+texture = ExtResource("6_77ila")
+skeleton = NodePath("../Skeleton2D")
+polygon = PackedVector2Array(878.259, 552.719, 875.975, 526.843, 842.489, 485.746, 813.569, 440.083, 816.613, 359.411, 800.631, 284.827, 740.508, 247.536, 669.729, 250.58, 691.039, 284.066, 687.995, 327.447, 659.836, 372.349, 634.721, 462.914, 657.553, 523.799, 693.322, 558.807, 758.012, 583.922, 851.622, 575.551, 875.214, 568.701)
+uv = PackedVector2Array(879.781, 548.153, 875.975, 526.843, 842.489, 485.746, 813.569, 440.083, 816.613, 359.411, 800.631, 284.827, 740.508, 247.536, 659.075, 249.058, 691.039, 284.066, 687.995, 327.447, 652.225, 369.305, 628.632, 474.33, 649.942, 525.321, 694.083, 569.462, 758.773, 586.205, 853.144, 577.834, 875.975, 570.984)
+bones = ["Bone2D", PackedFloat32Array(0.93, 1, 1, 1, 0.88, 0.28, 0, 0, 0, 0.38, 0.6, 0.6, 1, 1, 1, 0.93, 0.93), "Bone2D/Bone2D", PackedFloat32Array(0, 0, 0.15, 1, 1, 1, 1, 0.73, 0.58, 0.58, 1, 1, 0, 0.15, 0, 0, 0), "Bone2D/Bone2D/Bone2D", PackedFloat32Array(0, 0, 0, 0, 0, 0.61, 1, 1, 1, 0.22, 0, 0, 0, 0, 0, 0, 0)]
+
+[node name="Skeleton2D" type="Skeleton2D" parent="FOX"]
+
+[node name="Bone2D" type="Bone2D" parent="FOX/Skeleton2D"]
+position = Vector2(629, 403)
+scale = Vector2(1, 1)
+rest = Transform2D(1, 0, 0, 1, 629, 403)
+
+[node name="Bone2D" type="Bone2D" parent="FOX/Skeleton2D/Bone2D"]
+position = Vector2(-96, -86)
+rest = Transform2D(1, 0, 0, 1, -96, -86)
+auto_calculate_length_and_angle = false
+length = 70.0
+bone_angle = 275.05
+
+[node name="Bone2D" type="Bone2D" parent="FOX/Skeleton2D/Bone2D/Bone2D"]
+position = Vector2(2, -86)
+rest = Transform2D(1, 0, 0, 1, 2, -86)
+auto_calculate_length_and_angle = false
+length = 40.0
+bone_angle = -113.963
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FOX"]
+libraries = {
+&"": SubResource("AnimationLibrary_l146v")
+}
+autoplay = "tail_wag"
+
+[node name="bak2" type="Sprite2D" parent="FOX"]
+position = Vector2(504, 278.5)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("10_1u5ka")
+
+[node name="Pupil_L" type="Sprite2D" parent="FOX"]
+position = Vector2(652, 140.5)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("3_626he")
+offset = Vector2(2, 170)
+
+[node name="Pupil_R" type="Sprite2D" parent="FOX"]
+position = Vector2(720, 143.5)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("4_8u0lp")
+offset = Vector2(-86, 168)
+
+[node name="ear-R" type="Sprite2D" parent="FOX"]
+position = Vector2(504, 278.5)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_slhe1")
+
+[node name="ear_L" type="Sprite2D" parent="FOX"]
+position = Vector2(504, 278.5)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_qnxl2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 151.0
+offset_top = 191.0
+offset_right = 376.0
+offset_bottom = 345.0
+grow_vertical = 2
+alignment = 1
+
+[node name="Button_Start" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("6_8u0lp")
+theme_override_font_sizes/font_size = 20
+text = "Start
+"
+
+[node name="Button_Quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("6_8u0lp")
+theme_override_font_sizes/font_size = 20
+text = "Quit"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 66.0
+offset_right = 591.0
+offset_bottom = 164.0
+theme = ExtResource("1_626he")
+theme_override_colors/font_color = Color(1, 0.654902, 0.14902, 1)
+theme_override_colors/font_shadow_color = Color(0.05, 0.015, 0, 1)
+theme_override_colors/font_outline_color = Color(0.231373, 0.172549, 0.113725, 1)
+theme_override_constants/outline_size = 60
+theme_override_constants/shadow_outline_size = 10
+theme_override_fonts/font = ExtResource("7_i2i62")
+theme_override_font_sizes/font_size = 80
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lfskg")
+text = "FOX DEFENSE"
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+visible = false
+texture = ExtResource("8_lfskg")
+process_material = SubResource("ParticleProcessMaterial_ru7em")

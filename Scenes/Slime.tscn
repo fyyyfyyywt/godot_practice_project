@@ -136,9 +136,8 @@ SpeedUpProp = ExtResource("2_oi5nh")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.2, 1.2)
 sprite_frames = SubResource("SpriteFrames_tcsfi")
-animation = &"slim"
+animation = &"die"
 autoplay = "slim"
-frame_progress = 0.750899
 offset = Vector2(0, -10)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

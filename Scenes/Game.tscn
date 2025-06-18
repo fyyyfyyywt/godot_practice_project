@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=4 uid="uid://bqas2xfvvh2q3"]
+[gd_scene load_steps=27 format=4 uid="uid://bqas2xfvvh2q3"]
 
 [ext_resource type="Script" uid="uid://creum8hhrnhoc" path="res://Script/game_manager.gd" id="1_kldst"]
 [ext_resource type="PackedScene" uid="uid://brxkruqdul4yb" path="res://Scenes/player.tscn" id="2_gl6un"]
@@ -19,13 +19,12 @@
 [ext_resource type="Script" uid="uid://bmm82jf5mu2ij" path="res://Script/PauseMenu.gd" id="7_dahhg"]
 [ext_resource type="Texture2D" uid="uid://bnwvydqjhxi0m" path="res://AssetBundle/Sprites/pause_hover.png" id="8_dahhg"]
 [ext_resource type="Texture2D" uid="uid://ckljnn62j8gu5" path="res://TileSet/post_fence.png" id="9_tfod6"]
+[ext_resource type="Texture2D" uid="uid://cp32r3yvuiium" path="res://AssetBundle/Sprites/PowerUpProp.PNG" id="10_vvhu1"]
+[ext_resource type="Texture2D" uid="uid://dcmtnp4h4t54v" path="res://AssetBundle/Sprites/SpeedUpProp.png" id="11_lbihj"]
 [ext_resource type="Script" uid="uid://bnrgjnvbx3ycp" path="res://Script/camera_2d.gd" id="37_7w24h"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_j5yw3"]
 distance = -24.0
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_8r6kd"]
-size = Vector2(10, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tfod6"]
 size = Vector2(440, 480)
@@ -91,13 +90,12 @@ texture = ExtResource("9_tfod6")
 [sub_resource type="TileSet" id="TileSet_lbihj"]
 sources/2 = SubResource("TileSetAtlasSource_vvhu1")
 
-[node name="Node2D" type="Node2D" node_paths=PackedStringArray("Slime_SpawnTimer", "GameOverTimer", "UI_ScoreLabel", "UI_GameOverLabel")]
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("GameOverTimer", "UI_ScoreLabel", "UI_GameOverLabel")]
 y_sort_enabled = true
 script = ExtResource("1_kldst")
 Slime = ExtResource("3_j5yw3")
 GiantSlime = ExtResource("3_x3xnh")
 FlySlime = ExtResource("4_tfod6")
-Slime_SpawnTimer = NodePath("Timer")
 GameOverTimer = NodePath("GameOverTimer")
 UI_ScoreLabel = NodePath("UI/Label")
 UI_GameOverLabel = NodePath("UI/GameOverLabel")
@@ -118,7 +116,7 @@ position = Vector2(160, 416)
 [node name="Boundry" type="Node" parent="."]
 
 [node name="up" type="StaticBody2D" parent="Boundry"]
-position = Vector2(512, 248)
+position = Vector2(512, 256)
 rotation = -3.14159
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/up"]
@@ -132,24 +130,20 @@ rotation = 2.44346
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/left"]
 shape = SubResource("WorldBoundaryShape2D_j5yw3")
 
-[node name="StaticBody2D4" type="StaticBody2D" parent="Boundry"]
+[node name="right" type="StaticBody2D" parent="Boundry"]
 position = Vector2(1025, 256)
 rotation = -1.5708
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/StaticBody2D4"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/right"]
 position = Vector2(-0.999964, -10)
 shape = SubResource("WorldBoundaryShape2D_j5yw3")
 
-[node name="down" type="StaticBody2D" parent="."]
+[node name="down" type="StaticBody2D" parent="Boundry"]
 position = Vector2(512, 408)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="down"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundry/down"]
 position = Vector2(0, 4)
 shape = SubResource("WorldBoundaryShape2D_j5yw3")
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 3.0
-autostart = true
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -193,43 +187,66 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("7_acvyw")
-fire_rate_timer = NodePath("FireRateTimer")
-fire_rate_indicator = NodePath("Indicators/FireRateIndicator")
+fire_rate_timer = NodePath("VBoxContainer/Indicators/FireRateTimer")
+fire_rate_indicator = NodePath("VBoxContainer/Indicators/FireRateIndicator")
 
-[node name="FireRateTimer" type="ProgressBar" parent="UI/PowerUpUI"]
-visible = false
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PowerUpUI"]
+custom_minimum_size = Vector2(0, 5)
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -32.0
-offset_top = 8.0
-offset_right = 16.0
-offset_bottom = 16.0
-grow_horizontal = 2
-max_value = 10.0
-show_percentage = false
-
-[node name="Indicators" type="HBoxContainer" parent="UI/PowerUpUI"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
-offset_left = -360.0
-offset_top = 8.0
-offset_right = -360.0
-offset_bottom = 16.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 4
 
-[node name="FireRateIndicator" type="TextureRect" parent="UI/PowerUpUI/Indicators"]
-visible = false
+[node name="Indicators" type="HBoxContainer" parent="UI/PowerUpUI/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.0
-texture = SubResource("PlaceholderTexture2D_8r6kd")
-expand_mode = 1
-stretch_mode = 3
+alignment = 1
+
+[node name="FireRateIndicator" type="TextureRect" parent="UI/PowerUpUI/VBoxContainer/Indicators"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.0
+texture = ExtResource("10_vvhu1")
+expand_mode = 3
+
+[node name="FireRateTimer" type="ProgressBar" parent="UI/PowerUpUI/VBoxContainer/Indicators"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 10.0
+
+[node name="Indicators2" type="HBoxContainer" parent="UI/PowerUpUI/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.0
+alignment = 1
+
+[node name="FireRateIndicator" type="TextureRect" parent="UI/PowerUpUI/VBoxContainer/Indicators2"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.0
+texture = ExtResource("11_lbihj")
+expand_mode = 3
+
+[node name="FireRateTimer" type="ProgressBar" parent="UI/PowerUpUI/VBoxContainer/Indicators2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 10.0
 
 [node name="PauseUI" type="Control" parent="UI" node_paths=PackedStringArray("MenuPanel")]
 process_mode = 3
@@ -237,6 +254,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 8.0
+offset_right = 8.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("6_71axn")
@@ -368,7 +387,6 @@ position = Vector2(40, 0)
 tile_map_data = PackedByteArray("AAD9/x0AAAAAAAAAAAD9/x4AAAAAAAEAAAD9/x8AAAAAAAIAAAD+/x0AAAABAAAAAAD+/x4AAAABAAEAAAD+/x8AAAABAAIAAAD//x0AAAACAAAAAAD//x4AAAACAAEAAAD//x8AAAACAAIAAAAAAB0AAAADAAAAAAAAAB4AAAADAAEAAAAAAB8AAAADAAIAAAABAB0AAAAEAAAAAAABAB4AAAAEAAEAAAABAB8AAAAEAAIAAAACAB0AAAAFAAAAAAACAB4AAAAFAAEAAAACAB8AAAAFAAIAAAADAB0AAAAGAAAAAAADAB4AAAAGAAEAAAADAB8AAAAGAAIAAAAEAB0AAAAHAAAAAAAEAB4AAAAHAAEAAAAEAB8AAAAHAAIAAAAFAB0AAAAAAAAAAAAFAB4AAAAAAAEAAAAFAB8AAAAAAAIAAAAGAB0AAAABAAAAAAAGAB4AAAABAAEAAAAGAB8AAAABAAIAAAAHAB0AAAACAAAAAAAHAB4AAAACAAEAAAAHAB8AAAACAAIAAAAIAB0AAAADAAAAAAAIAB4AAAADAAEAAAAIAB8AAAADAAIAAAAJAB0AAAAEAAAAAAAJAB4AAAAEAAEAAAAJAB8AAAAEAAIAAAAKAB0AAAAFAAAAAAAKAB4AAAAFAAEAAAAKAB8AAAAFAAIAAAALAB0AAAAGAAAAAAALAB4AAAAGAAEAAAALAB8AAAAGAAIAAAAMAB0AAAAHAAAAAAAMAB4AAAAHAAEAAAAMAB8AAAAHAAIAAAANAB0AAAAAAAAAAAANAB4AAAAAAAEAAAANAB8AAAAAAAIAAAAOAB0AAAABAAAAAAAOAB4AAAABAAEAAAAOAB8AAAABAAIAAAAPAB0AAAACAAAAAAAPAB4AAAACAAEAAAAPAB8AAAACAAIAAAAQAB0AAAADAAAAAAAQAB4AAAADAAEAAAAQAB8AAAADAAIAAAARAB0AAAAEAAAAAAARAB4AAAAEAAEAAAARAB8AAAAEAAIAAAASAB0AAAAFAAAAAAASAB4AAAAFAAEAAAASAB8AAAAFAAIAAAATAB0AAAAGAAAAAAATAB4AAAAGAAEAAAATAB8AAAAGAAIAAAAUAB0AAAAAAAAAAAAUAB4AAAAAAAEAAAAUAB8AAAAAAAIAAAAVAB0AAAABAAAAAAAVAB4AAAABAAEAAAAVAB8AAAABAAIAAAAWAB0AAAACAAAAAAAWAB4AAAACAAEAAAAWAB8AAAACAAIAAAAXAB0AAAADAAAAAAAXAB4AAAADAAEAAAAXAB8AAAADAAIAAAAYAB0AAAAEAAAAAAAYAB4AAAAEAAEAAAAYAB8AAAAEAAIAAAAZAB0AAAAFAAAAAAAZAB4AAAAFAAEAAAAZAB8AAAAFAAIAAAAaAB0AAAAGAAAAAAAaAB4AAAAGAAEAAAAaAB8AAAAGAAIAAAAbAB0AAAAHAAAAAAAbAB4AAAAHAAEAAAAbAB8AAAAHAAIAAAAcAB0AAAAAAAAAAAAcAB4AAAAAAAEAAAAcAB8AAAAAAAIAAAAdAB0AAAABAAAAAAAdAB4AAAABAAEAAAAdAB8AAAABAAIAAAAeAB0AAAACAAAAAAAeAB4AAAACAAEAAAAeAB8AAAACAAIAAAAfAB0AAAADAAAAAAAfAB4AAAADAAEAAAAfAB8AAAADAAIAAAAgAB0AAAAEAAAAAAAgAB4AAAAEAAEAAAAgAB8AAAAEAAIAAAAhAB0AAAAFAAAAAAAhAB4AAAAFAAEAAAAhAB8AAAAFAAIAAAAiAB0AAAAGAAAAAAAiAB4AAAAGAAEAAAAiAB8AAAAGAAIAAAAjAB0AAAAAAAAAAAAjAB4AAAAAAAEAAAAjAB8AAAAAAAIAAAAkAB0AAAABAAAAAAAkAB4AAAABAAEAAAAkAB8AAAABAAIAAAAlAB0AAAACAAAAAAAlAB4AAAACAAEAAAAlAB8AAAACAAIAAAAmAB0AAAADAAAAAAAmAB4AAAADAAEAAAAmAB8AAAADAAIAAAAnAB0AAAAEAAAAAAAnAB4AAAAEAAEAAAAnAB8AAAAEAAIAAAAoAB0AAAAFAAAAAAAoAB4AAAAFAAEAAAAoAB8AAAAFAAIAAAApAB0AAAAGAAAAAAApAB4AAAAGAAEAAAApAB8AAAAGAAIAAAAqAB0AAAAHAAAAAAAqAB4AAAAHAAEAAAAqAB8AAAAHAAIAAAArAB0AAAAAAAAAAAArAB4AAAAAAAEAAAArAB8AAAAAAAIAAAAsAB0AAAABAAAAAAAsAB4AAAABAAEAAAAsAB8AAAABAAIAAAAtAB0AAAACAAAAAAAtAB4AAAACAAEAAAAtAB8AAAACAAIAAAAuAB0AAAADAAAAAAAuAB4AAAADAAEAAAAuAB8AAAADAAIAAAAvAB0AAAAEAAAAAAAvAB4AAAAEAAEAAAAvAB8AAAAEAAIAAAAwAB0AAAAFAAAAAAAwAB4AAAAFAAEAAAAwAB8AAAAFAAIAAAAxAB0AAAAGAAAAAAAxAB4AAAAGAAEAAAAxAB8AAAAGAAIAAAAyAB0AAAAHAAAAAAAyAB4AAAAHAAEAAAAyAB8AAAAHAAIAAAAzAB0AAAAAAAAAAAAzAB4AAAAAAAEAAAAzAB8AAAAAAAIAAAA0AB0AAAABAAAAAAA0AB4AAAABAAEAAAA0AB8AAAABAAIAAAA1AB0AAAACAAAAAAA1AB4AAAACAAEAAAA1AB8AAAACAAIAAAA2AB0AAAAAAAAAAAA2AB4AAAAAAAEAAAA2AB8AAAAAAAIAAAA3AB0AAAABAAAAAAA3AB4AAAABAAEAAAA3AB8AAAABAAIAAAA4AB0AAAACAAAAAAA4AB4AAAACAAEAAAA4AB8AAAACAAIAAAA5AB0AAAADAAAAAAA5AB4AAAADAAEAAAA5AB8AAAADAAIAAAA6AB0AAAAEAAAAAAA6AB4AAAAEAAEAAAA6AB8AAAAEAAIAAAA7AB0AAAAFAAAAAAA7AB4AAAAFAAEAAAA7AB8AAAAFAAIAAAA8AB0AAAAGAAAAAAA8AB4AAAAGAAEAAAA8AB8AAAAGAAIAAAA9AB0AAAAHAAAAAAA9AB4AAAAHAAEAAAA9AB8AAAAHAAIAAAA=")
 tile_set = ExtResource("6_4q8tf")
 
-[connection signal="timeout" from="Timer" to="." method="_new_slime"]
 [connection signal="pressed" from="UI/PauseUI/TextureButton" to="UI/PauseUI" method="_pause"]
 [connection signal="pressed" from="UI/PauseUI/Pause/ResumeButton" to="UI/PauseUI" method="_resume"]
 [connection signal="pressed" from="UI/PauseUI/Pause/QuitButton" to="UI/PauseUI" method="_quit"]

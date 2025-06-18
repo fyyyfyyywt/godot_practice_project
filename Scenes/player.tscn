@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://brxkruqdul4yb"]
+[gd_scene load_steps=25 format=3 uid="uid://brxkruqdul4yb"]
 
 [ext_resource type="Script" uid="uid://cyp6670pri82a" path="res://Script/player.gd" id="1_fq5u1"]
 [ext_resource type="PackedScene" uid="uid://qs6iepi4pgh4" path="res://Scenes/bullet_pistol.tscn" id="2_3smsa"]
@@ -49,109 +49,162 @@ _data = {
 &"RESET": SubResource("Animation_3smsa")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_gymyn"]
+atlas = ExtResource("10_fd4e3")
+region = Rect2(0, 0, 54, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pu2lt"]
+atlas = ExtResource("9_h4iuc")
+region = Rect2(0, 0, 54, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ukyrk"]
+atlas = ExtResource("11_qqcod")
+region = Rect2(0, 0, 54, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7dp3o"]
+atlas = ExtResource("13_fs7ks")
+region = Rect2(0, 0, 54, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h4iuc"]
+atlas = ExtResource("12_igrcy")
+region = Rect2(0, 0, 54, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_h4iuc"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("9_h4iuc")
+"texture": SubResource("AtlasTexture_gymyn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_fd4e3")
+"texture": SubResource("AtlasTexture_pu2lt")
 }, {
 "duration": 1.0,
-"texture": ExtResource("11_qqcod")
+"texture": SubResource("AtlasTexture_ukyrk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("12_igrcy")
+"texture": SubResource("AtlasTexture_7dp3o")
 }, {
 "duration": 1.0,
-"texture": ExtResource("13_fs7ks")
+"texture": SubResource("AtlasTexture_gymyn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h4iuc")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("9_h4iuc")
+"texture": SubResource("AtlasTexture_pu2lt")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_fd4e3")
+"texture": SubResource("AtlasTexture_gymyn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("11_qqcod")
+"texture": SubResource("AtlasTexture_ukyrk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("12_igrcy")
+"texture": SubResource("AtlasTexture_7dp3o")
 }, {
 "duration": 1.0,
-"texture": ExtResource("13_fs7ks")
+"texture": SubResource("AtlasTexture_gymyn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h4iuc")
 }],
 "loop": true,
 "name": &"over",
-"speed": 5.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("9_h4iuc")
+"texture": SubResource("AtlasTexture_pu2lt")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_fd4e3")
+"texture": SubResource("AtlasTexture_gymyn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("11_qqcod")
+"texture": SubResource("AtlasTexture_ukyrk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("12_igrcy")
+"texture": SubResource("AtlasTexture_7dp3o")
 }, {
 "duration": 1.0,
-"texture": ExtResource("13_fs7ks")
+"texture": SubResource("AtlasTexture_gymyn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h4iuc")
 }],
 "loop": true,
 "name": &"play",
-"speed": 5.0
+"speed": 12.0
 }]
 
-[sub_resource type="Animation" id="Animation_pu2lt"]
+[sub_resource type="Animation" id="Animation_fd4e3"]
+resource_name = "new_animation"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(4.818, 3), Vector2(4.6, 2.6)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0333333, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.84, 0.84, 0.84, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qqcod"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(8, 3)]
+"values": [Vector2(9.94339, 2.94339)]
 }
-
-[sub_resource type="Animation" id="Animation_gymyn"]
-resource_name = "new_animation"
-length = 0.5
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.266667, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(8, 3), Vector2(9, 2), Vector2(8, 3)]
+"values": [Color(1, 1, 1, 1)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_ukyrk"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_igrcy"]
 _data = {
-&"RESET": SubResource("Animation_pu2lt"),
-&"new_animation": SubResource("Animation_gymyn")
+&"RESET": SubResource("Animation_qqcod"),
+&"new_animation": SubResource("Animation_fd4e3")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_fq5u1"]
-radius = 17.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gymyn"]
+size = Vector2(15, 50)
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animator")]
 script = ExtResource("1_fq5u1")
@@ -175,31 +228,37 @@ libraries = {
 autoplay = "GlowPulse"
 
 [node name="WeaponHolder" type="Node2D" parent="."]
-position = Vector2(-10, 0)
+position = Vector2(-4, 0)
 
 [node name="player" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, 0)
 sprite_frames = SubResource("SpriteFrames_h4iuc")
 animation = &"play"
+autoplay = "play"
+frame_progress = 0.341845
+offset = Vector2(0, -1)
 flip_h = true
 
 [node name="Sprite2D" type="Sprite2D" parent="player"]
 visible = false
 modulate = Color(1, 1, 1, 0.7)
 z_index = 1
-position = Vector2(8, 3)
+position = Vector2(9.94339, 2.94339)
 rotation = 1.66853
-scale = Vector2(0.7, 0.7)
+scale = Vector2(0.62, 0.62)
 texture = ExtResource("9_gymyn")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="player"]
+root_node = NodePath("../Sprite2D")
 libraries = {
-&"": SubResource("AnimationLibrary_ukyrk")
+&"": SubResource("AnimationLibrary_igrcy")
 }
 autoplay = "new_animation"
 
 [node name="collision" type="CollisionShape2D" parent="."]
 visible = false
-shape = SubResource("CircleShape2D_fq5u1")
+position = Vector2(1, 0)
+shape = SubResource("RectangleShape2D_gymyn")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.2

@@ -1,9 +1,10 @@
-[gd_resource type="Theme" load_steps=10 format=3 uid="uid://ccgw1l71prk1v"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://ccgw1l71prk1v"]
 
 [ext_resource type="FontFile" uid="uid://hix8wfjvqcf3" path="res://AssetBundle/Uranus_Pixel_11Px.ttf" id="1_svso5"]
 [ext_resource type="Texture2D" uid="uid://dkiqb5t8a60j" path="res://AssetBundle/Sprites/button_hover.png" id="2_mvlqe"]
 [ext_resource type="Texture2D" uid="uid://dapo7wj80kyfw" path="res://AssetBundle/Sprites/button_normal.png" id="3_is7fn"]
 [ext_resource type="Texture2D" uid="uid://84ct8r0nw5jw" path="res://AssetBundle/Sprites/button_pressed.png" id="4_a2cnb"]
+[ext_resource type="FontFile" uid="uid://cvf06onavfnxn" path="res://AssetBundle/RussoOne-Regular.ttf" id="5_mvlqe"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_svso5"]
 
@@ -32,10 +33,13 @@ texture_margin_bottom = 6.0
 bg_color = Color(0, 0, 0, 0.298039)
 
 [resource]
+default_font = ExtResource("5_mvlqe")
 Button/font_sizes/font_size = 12
 Button/fonts/font = ExtResource("1_svso5")
 Button/styles/focus = SubResource("StyleBoxEmpty_svso5")
 Button/styles/hover = SubResource("StyleBoxTexture_40myg")
 Button/styles/normal = SubResource("StyleBoxTexture_sipa6")
 Button/styles/pressed = SubResource("StyleBoxTexture_xggcs")
+Label/font_sizes/font_size = 16
+Label/fonts/font = ExtResource("5_mvlqe")
 Panel/styles/panel = SubResource("StyleBoxFlat_su76j")

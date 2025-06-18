@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="fox"
-run/main_scene="uid://bqas2xfvvh2q3"
+run/main_scene="uid://bm5prxvdondei"
 config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
 

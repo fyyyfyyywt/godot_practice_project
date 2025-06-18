@@ -1,103 +1,114 @@
 extends Node2D
 
-# Map Limit
+# 地圖邊界
 const LEFT_BORDER := 312 
 const RIGHT_BORDER := 1000  
-const UPPPER_BORDER := 240  
+const UPPER_BORDER := 240  
 const BOTTOM_BORDER := 440 
 
-# Slime Scenes
-@export var Slime : PackedScene
-@export var GiantSlime : PackedScene
+# Slime 预制体
+@export var Slime: PackedScene
+@export var GiantSlime: PackedScene
 @export var FlySlime: PackedScene
-@export var Slime_SpawnTimer : Timer
 
-# UI Elements
-@export var GameOverTimer : Timer
-@export var UI_ScoreLabel : Label
-@export var UI_GameOverLabel : Label
+# UI
+@export var GameOverTimer: Timer
+@export var UI_ScoreLabel: Label
+@export var UI_GameOverLabel: Label
 
-# Game State
-var score : int = 0
-var Flag_IsGameOver : bool = false
-var round_time := 0.0  # 👈 当前这一局从0开始的计时器
+# 游戏状态
+var score: int = 0
+var Flag_IsGameOver: bool = false
+var round_time := 0.0
 
-# Props
+# 掉落道具
 var MAX_PICKUPS_ON_MAP := 3  
 var AUTOSPAWN_INTERVAL := 10.0
 var autospawn_timer := 0.0
 var pickup_scene_speed := preload("res://Scenes/speed_up_prop.tscn")
 var pickup_scene_fire := preload("res://Scenes/power_up_prop.tscn")
 
-# Time Management for Spawn Interval Steps
-var spawn_step_times = [30, 60, 90, 120, 150] # second marks
-var spawn_intervals = [2.7, 2.4, 2.1, 1.8, 1.5] # matching intervals
-
-# Called when the node enters the scene tree
+# 启动游戏
 func _ready() -> void:
 	GameBalanceLoader.load_json("res://Data/balance_data.json")
-	round_time = 0.0  # 👈 重新开始一局时重置计时器
+	round_time = 0.0
 	var player = get_tree().current_scene.get_node("Player")
 	player.player_hit.connect(_on_player_hit)
-	Slime_SpawnTimer.timeout.connect(generate_slime)
-	Slime_SpawnTimer.stop()
-	Slime_SpawnTimer.wait_time = 3.0
-	Slime_SpawnTimer.start()
 
-# Called every frame
+	await get_tree().create_timer(1.0).timeout  # 開場緩衝
+	await _start_wave_loop()
+
+# 每帧处理
 func _process(delta: float) -> void:
-	if not Flag_IsGameOver:
-		round_time += delta  # 👈 用这个作为游戏节奏判断时间
-		autospawn_timer += delta
-		if autospawn_timer > AUTOSPAWN_INTERVAL:
-			autospawn_timer = 0.0
-			spawn_random_pickup()
-		_update_spawn_interval()
+	if Flag_IsGameOver:
+		return
+
+	round_time += delta
+	autospawn_timer += delta
+	if autospawn_timer > AUTOSPAWN_INTERVAL:
+		autospawn_timer = 0.0
+		spawn_random_pickup()
+
 	UI_ScoreLabel.text = "Score: " + str(score)
 
-# Dynamic spawn interval control (step-based)
-func _update_spawn_interval() -> void:
-	for i in spawn_step_times.size():
-		if round_time >= spawn_step_times[i]:
-			Slime_SpawnTimer.wait_time = spawn_intervals[i]
+# 主波次循环（遞迴控制節奏）
+func _start_wave_loop() -> void:
+	while not Flag_IsGameOver:
+		await _generate_slime_wave()
+		await get_tree().create_timer(3.0).timeout  # 波與波之間緩衝
 
-func can_spawn_pickup():
+# 單波敵人生成
+func _generate_slime_wave() -> void:
+	var row := GameBalanceLoader.get_row_by_time(round_time)
+	var count: int = row.get("每波敌人数", 2)
+	var weights: Dictionary = row.get("敌人类型权重", {"slime": 1.0})
+	var interval: float = row.get("敌人刷新间隔（秒）", 2.5)
+
+	for i in count:
+		if Flag_IsGameOver:
+			return
+
+		var slime_type := _roll_enemy_type(weights)
+		var slime := _create_slime_by_type(slime_type)
+		if slime:
+			slime.slime_triggered_game_over.connect(_on_slime_triggered_game_over)
+			add_child(slime)
+
+		await get_tree().create_timer(interval).timeout
+
+# 掉落道具相關
+func can_spawn_pickup() -> bool:
 	return get_tree().get_nodes_in_group("pickup_items").size() < MAX_PICKUPS_ON_MAP
 
 func spawn_random_pickup() -> void:
-	if not can_spawn_pickup(): return
+	if not can_spawn_pickup():
+		return
 	var rand = randi() % 2
-	var pickup
-	if (rand == 0):
-		pickup = pickup_scene_speed.instantiate()
-	else:
-		pickup = pickup_scene_fire.instantiate()
-	pickup.position = Vector2(randf_range(380, RIGHT_BORDER), randf_range(UPPPER_BORDER, BOTTOM_BORDER))
+	var pickup = pickup_scene_speed.instantiate() if rand == 0 else pickup_scene_fire.instantiate()
+	pickup.position = Vector2(randf_range(380, RIGHT_BORDER), randf_range(UPPER_BORDER, BOTTOM_BORDER))
 	add_child(pickup)
 
-func spawn_pickup_from_enemy(pos: Vector2):
-	if not can_spawn_pickup(): return
-	var pickup
+func spawn_pickup_from_enemy(pos: Vector2) -> void:
+	if not can_spawn_pickup():
+		return
 	if randf() < 0.2:
-		if (randi() % 2 == 0):
-			pickup = pickup_scene_fire.instantiate() 
-		else: 
-			pickup = pickup_scene_speed.instantiate()
+		var pickup = pickup_scene_fire.instantiate() if (randi() % 2 == 0) else pickup_scene_speed.instantiate()
 		pickup.position = pos
 		call_deferred("add_child", pickup)
 
+# 敵人生成
 func _create_slime_by_type(slime_type: String) -> Node2D:
 	match slime_type:
 		"slime":
 			var slime = Slime.instantiate()
 			slime.slime_speed = clamp(slime.slime_speed + 0.25 * score, 0, 120)
-			slime.position = Vector2(1040, randi_range(UPPPER_BORDER, BOTTOM_BORDER))
+			slime.position = Vector2(1040, randi_range(UPPER_BORDER, BOTTOM_BORDER))
 			slime.target_position = Vector2(200, 272)
 			return slime
 		"giant":
 			var slime = GiantSlime.instantiate()
 			slime.add_to_group("giant_slime")
-			slime.position = Vector2(1040, randi_range(UPPPER_BORDER, BOTTOM_BORDER))
+			slime.position = Vector2(1040, randi_range(UPPER_BORDER, BOTTOM_BORDER))
 			slime.target_position = Vector2(200, 272)
 			return slime
 		"fly":
@@ -107,11 +118,11 @@ func _create_slime_by_type(slime_type: String) -> Node2D:
 			return slime
 	return null
 
+# 隨機敵人類型選擇
 func _roll_enemy_type(weights: Dictionary) -> String:
 	var total := 0.0
 	for v in weights.values():
 		total += v
-	
 	var r := randf() * total
 	var cumulative := 0.0
 	for key in weights.keys():
@@ -120,22 +131,7 @@ func _roll_enemy_type(weights: Dictionary) -> String:
 			return key
 	return "slime"
 
-func generate_slime():
-	if Flag_IsGameOver:
-		return	
-		
-	var row := GameBalanceLoader.get_row_by_time(round_time)
-	var count: int = row.get("每波敌人数", 2)
-	var weights: Dictionary = row.get("敌人类型权重", {"slime": 1.0})
-	var interval: float = row.get("敌人刷新间隔（秒）", 2.5)
-
-	for i in count:
-		var slime_type := _roll_enemy_type(weights)
-		var slime := _create_slime_by_type(slime_type)
-		if slime:
-			slime.slime_triggered_game_over.connect(_on_slime_triggered_game_over)
-			add_child(slime)
-
+# Game Over 處理
 func game_over() -> void:
 	if Flag_IsGameOver:
 		return
@@ -154,4 +150,4 @@ func _on_slime_triggered_game_over() -> void:
 	game_over()
 
 func _on_game_over_timer_timeout() -> void:
-	get_tree().reload_current_scene()
+	get_tree().change_scene_to_file("res://Scenes/start_menu.tscn")
