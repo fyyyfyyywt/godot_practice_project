@@ -61,7 +61,21 @@ func _start_wave_loop() -> void:
 func _generate_slime_wave() -> void:
 	var row := GameBalanceLoader.get_row_by_time(round_time)
 	var count: int = row.get("每波敌人数", 2)
-	var weights: Dictionary = row.get("敌人类型权重", {"slime": 1.0})
+	var weights_raw = row.get("敌人类型权重", null)
+	var weights: Dictionary
+
+	if typeof(weights_raw) == TYPE_DICTIONARY:
+		weights = weights_raw
+	elif typeof(weights_raw) == TYPE_STRING:
+		var fixed_str = weights_raw.replace("'", "\"")  # 修复单引号
+		var parsed = JSON.parse_string(fixed_str)
+		if parsed is Dictionary:
+			weights = parsed
+		else:
+			push_error("敌人类型权重解析失败，使用默认值")
+			weights = {"slime": 1.0}
+	else:
+		weights = {"slime": 1.0}
 	var interval: float = row.get("敌人刷新间隔（秒）", 2.5)
 
 	for i in count:

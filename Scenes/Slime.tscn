@@ -136,7 +136,7 @@ SpeedUpProp = ExtResource("2_oi5nh")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.2, 1.2)
 sprite_frames = SubResource("SpriteFrames_tcsfi")
-animation = &"die"
+animation = &"slim"
 autoplay = "slim"
 offset = Vector2(0, -10)
 
