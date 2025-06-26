@@ -17,8 +17,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Bgm="*res://Scenes/bgm.tscn"
 GameBalanceLoader="*res://Script/game_balance_loader.gd"
+ScoreManager="*res://Script/score_manager.gd"
+BgmManager="*res://Script/BGM_manager.gd"
 
 [display]
 

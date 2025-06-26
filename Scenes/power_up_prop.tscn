@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://gjrkhhhmwteu"]
 
 [ext_resource type="Script" uid="uid://clqqu0iwq50wv" path="res://Script/fire_rate_prop.gd" id="1_217pq"]
-[ext_resource type="Texture2D" uid="uid://cp32r3yvuiium" path="res://AssetBundle/Sprites/PowerUpProp.PNG" id="2_217pq"]
+[ext_resource type="Texture2D" uid="uid://d0va0ajdxfv52" path="res://AssetBundle/Sprites/PowerUpProp_UI.PNG" id="2_217pq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mw838"]
 size = Vector2(26, 22)
@@ -72,7 +72,7 @@ _data = {
 script = ExtResource("1_217pq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.05, 0.05)
+scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_217pq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

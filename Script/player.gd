@@ -2,28 +2,41 @@ extends CharacterBody2D
 
 signal player_hit  # Signal for when the player is hit by an enemy
 
-@export var move_speed: float = 100
+@export var move_speed: float = 150
 @export var animator: AnimatedSprite2D
-@export var bullet_scene: PackedScene
-
 @export var fire_rate: float = 0.5  # Shooting interval (seconds)
 @export var bullet_offset: float = 32  # Bullet spawn offset
 
 @export var fire_rate_boost_duration: float = 10.0  # Duration of fire rate boost
 @export var fire_rate_boost_amount: float = 0.1  # Amount to reduce fire rate by
+@export var speed_boost_duration: float = 10.0
+
 var base_fire_rate: float  # Store the default fire rate
+var base_move_speed: float
+
 var boost_timer: float = 0.0  # Track boost duration
-var is_boosted: bool = false  # Track if boost is active
+var boost_stacks := 0
+
+var speed_boost_timer: float = 0.0
+var speed_boost_stacks := 0
 
 var shoot_timer: float = 0.0  # 自动射击计时器
 var can_move: bool = true  # Control player input during game over
-var power_up_ui : Control
 
-var pistol_scene = preload("res://Scenes/Weapon.tscn")
+var power_up_ui : Control
+var stack_label:Label
+var speed_stack_label:Label
+
+@onready var pistol_scene = preload("res://Scenes/Weapon.tscn")
+@onready var bullet_scene = preload("res://Scenes/bullet_pistol.tscn")
 
 func _ready() -> void:
 	base_fire_rate = fire_rate  # Store initial fire rate
-	power_up_ui = $"../UI/PowerUpUI"
+	base_move_speed = move_speed
+	
+	power_up_ui = $"../UI/Items"
+	stack_label = power_up_ui.get_node("VBoxContainer/PowerUP/Label")
+	speed_stack_label = power_up_ui.get_node("VBoxContainer/SpeedUp/Label")
 	
 	var pistol = pistol_scene.instantiate()
 	$WeaponHolder.add_child(pistol)
@@ -56,14 +69,23 @@ func _process(delta: float) -> void:
 		elif velocity == Vector2.ZERO:
 			$RunningSound.stop()
 			
-		if is_boosted: 
+		if boost_stacks>0: 
 			boost_timer -= delta
 			if boost_timer <= 0:
-				is_boosted = false
+				boost_stacks = 0
 				fire_rate = base_fire_rate  # Revert to original fire rate
-				if power_up_ui: power_up_ui.set_power_up_active("fire_rate", false)
-			if power_up_ui:
+				power_up_ui.set_power_up_active("fire_rate", false)
+			else:
 				power_up_ui.update_fire_rate_timer(boost_timer, fire_rate_boost_duration)
+		
+		if speed_boost_stacks > 0:
+			speed_boost_timer -= delta
+			if speed_boost_timer <= 0:
+				speed_boost_stacks = 0
+				move_speed = base_move_speed
+				power_up_ui.set_power_up_active("speed", false)
+			else:
+				power_up_ui.update_speed_timer(speed_boost_timer, speed_boost_duration)
 
 func _physics_process(_delta: float) -> void:
 	if can_move:
@@ -90,8 +112,7 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func get_shoot_direction() -> Vector2:
-	var direction = (get_global_mouse_position() - global_position).normalized()
-	return direction
+	return (get_global_mouse_position() - global_position).normalized()
 	
 func _spawn_bullet(direction: Vector2) -> void:
 	var bullet_node = bullet_scene.instantiate() 
@@ -105,14 +126,23 @@ func _spawn_bullet(direction: Vector2) -> void:
 
 func apply_fire_rate_boost() -> void:
 	fire_rate = max(fire_rate - fire_rate_boost_amount, 0.1)  # Apply boost
-	is_boosted = true
+	boost_stacks += 1
 	boost_timer = fire_rate_boost_duration  # Start boost timer
-	if power_up_ui:
-		power_up_ui.set_power_up_active("fire_rate", true)
+	power_up_ui.set_power_up_active("fire_rate", true)
+	if boost_stacks >=4:
+		stack_label.text = "MAX" % boost_stacks
+	else:
+		stack_label.text = "×%d" % boost_stacks
 
 func apply_speed_up() -> void:
-	move_speed += 25
-	move_speed = clamp(move_speed,100, 250)  # Apply boost
+	move_speed = min(move_speed+25, 250)
+	speed_boost_stacks +=1
+	speed_boost_timer = speed_boost_duration  # Start boost timer
+	power_up_ui.set_power_up_active("speed", true)
+	if speed_boost_stacks >=4:
+		speed_stack_label.text = "MAX" % speed_boost_stacks
+	else:
+		speed_stack_label.text = "×%d" % speed_boost_stacks
 
 func on_hit() -> void:
 	emit_signal("player_hit")

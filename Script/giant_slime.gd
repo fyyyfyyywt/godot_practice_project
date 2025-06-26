@@ -25,7 +25,7 @@ func _physics_process(delta: float) -> void:
 			emit_signal("slime_triggered_game_over")
 	elif is_dead:
 		animator.play("die")
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.5,true).timeout
 		queue_free()
 		
 
@@ -48,5 +48,4 @@ func _on_area_entered(area: Area2D) -> void:
 			game_manager.spawn_pickup_from_enemy(global_position)
 			$AudioStreamPlayer2D.play()
 			is_dead = true
-			get_parent().score += kill_score
-	
+			get_parent().add_score(kill_score)

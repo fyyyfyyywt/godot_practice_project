@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://bfibtnuvk2rya"]
+
+[ext_resource type="Script" uid="uid://lpg41ikyk62h" path="res://Script/intro_dialog.gd" id="1_jfhdn"]
+
+[node name="IntroDialog" type="CanvasLayer"]
+script = ExtResource("1_jfhdn")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="DialogLabel" type="RichTextLabel" parent="."]
+offset_top = 360.0
+offset_right = 1024.0
+offset_bottom = 512.0
+bbcode_enabled = true
+visible_characters = 0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HintLabel" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.03
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

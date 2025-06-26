@@ -1,10 +1,10 @@
 extends Control
 
 @export var MenuPanel : Panel
-
+var game 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	game = get_tree().current_scene
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -18,10 +18,14 @@ func _input(event: InputEvent) -> void:
 func _pause() -> void:
 	get_tree().paused = true
 	MenuPanel.visible = true
+	game.flag_is_paused = true
 	
 func _resume() -> void:
 	get_tree().paused = false
 	MenuPanel.visible = false
+	game.flag_is_paused = false
 	
 func _quit() -> void:
+	var score : int = get_tree().current_scene.score
+	ScoreManager.save_temp_score(score)
 	get_tree().quit()
